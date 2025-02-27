@@ -1,5 +1,6 @@
 package com.bridgelabz.employeepayrollapp.service;
 
+import com.bridgelabz.employeepayrollapp.dto.EmployeeDTO;
 import com.bridgelabz.employeepayrollapp.entity.EmployeeEntity;
 import com.bridgelabz.employeepayrollapp.repository.EmployeeRepository;
 import org.slf4j.Logger;
@@ -17,32 +18,36 @@ public class EmployeeService {
     @Autowired
     public EmployeeRepository employeeRepository;
     //save employees
-    public EmployeeEntity saveEmployees(EmployeeEntity employee){
-        return employeeRepository.save(employee);
+    public EmployeeEntity saveEmployees(EmployeeDTO employee){
+        EmployeeEntity emp = new EmployeeEntity();
+        emp.setName(employee.getName());
+        emp.setSalary(employee.getSalary());
+        logger.info("Saving employee: {}", employee.getName());
+
+        return employeeRepository.save(emp);
     }
     //list of employees
     public List<EmployeeEntity> getAllEmployees(){
+        logger.info("Getting all employees");
         return employeeRepository.findAll();
     }
-    //
     public Optional<EmployeeEntity> getEmployeeById(Long id){
+        logger.info("Get employee details by id: {}", id);
         return employeeRepository.findById(id);
     }
     public void deleteEmployee(Long id){
+        logger.info("Delete employee.");
         employeeRepository.deleteById(id);
     }
-    public EmployeeEntity updateEmployee(Long id, EmployeeEntity newEmployee){
+    public EmployeeEntity updateEmployee(Long id, EmployeeDTO newEmployee){
+        logger.info("Updated employee details.");
         Optional<EmployeeEntity> optionalEmployee= employeeRepository.findById(id);
         if(optionalEmployee.isPresent()){
             EmployeeEntity existingEmployee= optionalEmployee.get();
             existingEmployee.setName(newEmployee.getName());
-            existingEmployee.setDepartment(newEmployee.getDepartment());
             existingEmployee.setSalary(newEmployee.getSalary());
             return employeeRepository.save(existingEmployee);
         }
-        else{
-            newEmployee.setId(id);
-            return employeeRepository.save(newEmployee);
-        }
+       return null;
     }
 }

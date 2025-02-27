@@ -1,6 +1,5 @@
 package com.bridgelabz.employeepayrollapp.entity;
 
-import com.bridgelabz.employeepayrollapp.EmployeePayrollApplication;
 import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
