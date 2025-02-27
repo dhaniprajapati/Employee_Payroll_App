@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-//UC_2- introducing service layer in employee payroll app
+//UC_3- Ability for the Services Layer to store the Employee Payroll Data
 @Service
 public class EmployeeService {
     public static final Logger logger= LoggerFactory.getLogger(EmployeeService.class);
@@ -31,14 +31,17 @@ public class EmployeeService {
         logger.info("Getting all employees");
         return employeeRepository.findAll();
     }
+    //get employess by id
     public Optional<EmployeeEntity> getEmployeeById(Long id){
         logger.info("Get employee details by id: {}", id);
         return employeeRepository.findById(id);
     }
+    //delete employees by id
     public void deleteEmployee(Long id){
         logger.info("Delete employee.");
         employeeRepository.deleteById(id);
     }
+    //update employees
     public EmployeeEntity updateEmployee(Long id, EmployeeDTO newEmployee){
         logger.info("Updated employee details.");
         Optional<EmployeeEntity> optionalEmployee= employeeRepository.findById(id);
