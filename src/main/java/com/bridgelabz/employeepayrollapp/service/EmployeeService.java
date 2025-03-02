@@ -31,24 +31,43 @@ public class EmployeeService {
     }
     //get employess by id
     public Optional<EmployeeEntity> getEmployeeById(Long id){
-        log.info("Get employee details by id: {}", id);
-        return employeeRepository.findById(id);
+        try {
+            log.info("Get employee details by id: {}", id);
+            return employeeRepository.findById(id);
+        } catch (Exception e) {
+            log.error("Error finding employee with ID {}", id, e);
+            return Optional.empty();
+        }
     }
     //delete employees by id
-    public void deleteEmployee(Long id){
-        log.info("Delete employee.");
-        employeeRepository.deleteById(id);
+    public boolean deleteEmployee(Long id) {
+        // Try block
+        try {
+            employeeRepository.deleteById(id);
+            log.info("Deleted employee with ID: {}", id);
+            return true;
+        }
+        // Catch block
+        catch (Exception e) {
+            log.error("Error deleting employee with ID: {}", id, e);
+            return false;
+        }
     }
     //update employees
     public EmployeeEntity updateEmployee(Long id, EmployeeDTO newEmployee){
-        log.info("Updated employee details.");
-        Optional<EmployeeEntity> optionalEmployee= employeeRepository.findById(id);
-        if(optionalEmployee.isPresent()){
-            EmployeeEntity existingEmployee= optionalEmployee.get();
-            existingEmployee.setName(newEmployee.getName());
-            existingEmployee.setSalary(newEmployee.getSalary());
-            return employeeRepository.save(existingEmployee);
+        try {
+            log.info("Updated employee details.");
+            Optional<EmployeeEntity> optionalEmployee = employeeRepository.findById(id);
+            if (optionalEmployee.isPresent()) {
+                EmployeeEntity existingEmployee = optionalEmployee.get();
+                existingEmployee.setName(newEmployee.getName());
+                existingEmployee.setSalary(newEmployee.getSalary());
+                return employeeRepository.save(existingEmployee);
+            }
+            return null;
+        } catch (RuntimeException e) {
+            log.error("An unexpected error occurred while updating employee with ID: {}", id, e);
+            return null;
         }
-       return null;
     }
 }
