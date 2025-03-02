@@ -4,9 +4,8 @@ import com.bridgelabz.employeepayrollapp.dto.EmployeeDTO;
 import com.bridgelabz.employeepayrollapp.entity.EmployeeEntity;
 import com.bridgelabz.employeepayrollapp.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
@@ -48,8 +47,13 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<EmployeeDTO> deleteEmployee(@PathVariable Long id){
         log.info("Delete employee.");
-        employeeService.deleteEmployee(id);
-        return ResponseEntity.noContent().build();
+        boolean deletedEmployee= employeeService.deleteEmployee(id);
+        if(deletedEmployee) {
+            return ResponseEntity.noContent().build();
+        } else {
+            log.warn("No employee found with ID: {} to delete", id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     @PutMapping
     public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO){
