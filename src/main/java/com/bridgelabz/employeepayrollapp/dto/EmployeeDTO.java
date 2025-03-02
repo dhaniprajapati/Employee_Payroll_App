@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmployeeDTO {
-    @Pattern(regexp = "^[A-Z]{1}[a-zA-Z\\s]{2,}$", message = "Employee name Invalid")
+    @Pattern(regexp = "^[A-Z][a-zA-Z\\s]{2,}$", message = "Employee name Invalid")
     private String name;
     @Min(value = 10000, message = "Salary should be minimum 10,000")
     private double salary;
