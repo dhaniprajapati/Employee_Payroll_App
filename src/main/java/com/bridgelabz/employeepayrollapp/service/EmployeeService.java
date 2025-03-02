@@ -4,7 +4,6 @@ import com.bridgelabz.employeepayrollapp.dto.EmployeeDTO;
 import com.bridgelabz.employeepayrollapp.entity.EmployeeEntity;
 import com.bridgelabz.employeepayrollapp.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +11,11 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class EmployeeService {
-    //dependency injection
-    @Autowired
-    public EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+    //constructor injection
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
     //save employees
     public EmployeeEntity saveEmployees(EmployeeDTO employee){
         EmployeeEntity emp = new EmployeeEntity();

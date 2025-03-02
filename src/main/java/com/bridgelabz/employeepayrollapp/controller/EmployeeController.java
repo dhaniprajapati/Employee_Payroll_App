@@ -4,7 +4,6 @@ import com.bridgelabz.employeepayrollapp.dto.EmployeeDTO;
 import com.bridgelabz.employeepayrollapp.entity.EmployeeEntity;
 import com.bridgelabz.employeepayrollapp.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +15,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class EmployeeController {
+    //constructor injection
+    private final EmployeeService employeeService;
 
-    @Autowired
-    public EmployeeService employeeService;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
     @PostMapping
-    public ResponseEntity<?> addEmployees(@RequestBody EmployeeDTO employee){
+    public ResponseEntity<EmployeeDTO> addEmployees(@RequestBody EmployeeDTO employee){
         log.info("Adding a new employee: {}", employee.getName());
         EmployeeEntity saveEmployee= employeeService.saveEmployees(employee);
         return ResponseEntity.ok(new EmployeeDTO(saveEmployee));
